@@ -44,6 +44,7 @@ namespace CommunicationsToolkit
         /// <summary>
         /// 读取寄存器
         /// </summary>
+        /// <param name="register">指定寄存器</param>
         /// <param name="address">地址</param>
         /// <param name="amount">地址数</param>
         /// <returns></returns>
@@ -54,8 +55,9 @@ namespace CommunicationsToolkit
             return register.Skip(address * 2).Take(amount * 2).ToArray();
         }
         /// <summary>
-        /// 更改寄存器值
+        /// 设置寄存器值
         /// </summary>
+        /// <param name="register">指定寄存器</param>
         /// <param name="inputData">数据</param>
         /// <param name="address">地址</param>
         public static void SetRegister(byte[] register, byte[] inputData, ushort address)
@@ -63,7 +65,12 @@ namespace CommunicationsToolkit
             if (inputData.Length < 2) return;
             inputData.CopyTo(register, address * 2);
         }
-
+        /// <summary>
+        /// 设置寄存器值
+        /// </summary>
+        /// <param name="register">指定寄存器</param>
+        /// <param name="inputData">数据</param>
+        /// <param name="address">地址</param>
         public static void SetRegister(byte[] register, ushort inputData, ushort address)
         {
             byte[] data = BitConverter.GetBytes(inputData);

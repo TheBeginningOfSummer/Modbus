@@ -8,10 +8,10 @@ namespace Modbus.Models
 {
     public class WeightData
     {
-        public double Weight { get; set; }
+        public float Weight { get; set; }
         public string WeighTime { get; set; }
 
-        public WeightData(double weight, string weighTime)
+        public WeightData(float weight, string weighTime)
         {
             Weight = weight;
             WeighTime = weighTime;

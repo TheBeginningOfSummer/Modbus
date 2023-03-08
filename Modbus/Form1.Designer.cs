@@ -31,19 +31,22 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.TC_Main = new System.Windows.Forms.TabControl();
             this.TP_AutoPage = new System.Windows.Forms.TabPage();
+            this.LB_ConnectionStatus = new System.Windows.Forms.Label();
+            this.LB_连接状态 = new System.Windows.Forms.Label();
+            this.BTN_Test = new System.Windows.Forms.Button();
+            this.LB_AlarmStatus = new System.Windows.Forms.Label();
+            this.LB_报警状态 = new System.Windows.Forms.Label();
+            this.LB_DeviceStatus = new System.Windows.Forms.Label();
+            this.LB_设备状态 = new System.Windows.Forms.Label();
+            this.BTN_Stop = new System.Windows.Forms.Button();
+            this.BTN_Start = new System.Windows.Forms.Button();
             this.BTN_Manual = new System.Windows.Forms.Button();
             this.BTN_Auto = new System.Windows.Forms.Button();
             this.TS_Connection = new System.Windows.Forms.ToolStrip();
             this.TSB_Listening = new System.Windows.Forms.ToolStripButton();
-            this.TSB_Stop = new System.Windows.Forms.ToolStripButton();
-            this.TSB_Save = new System.Windows.Forms.ToolStripButton();
-            this.TSTB_Port = new System.Windows.Forms.ToolStripTextBox();
-            this.TSL_端口 = new System.Windows.Forms.ToolStripLabel();
-            this.TSTB_IP = new System.Windows.Forms.ToolStripTextBox();
-            this.TSL_IP = new System.Windows.Forms.ToolStripLabel();
+            this.TSB_Set = new System.Windows.Forms.ToolStripButton();
             this.TP_DataPage = new System.Windows.Forms.TabPage();
             this.GB_Inquire = new System.Windows.Forms.GroupBox();
-            this.BTN_Test = new System.Windows.Forms.Button();
             this.BTN_Inquire = new System.Windows.Forms.Button();
             this.DTP_Max = new System.Windows.Forms.DateTimePicker();
             this.DTP_Min = new System.Windows.Forms.DateTimePicker();
@@ -69,6 +72,15 @@
             // 
             // TP_AutoPage
             // 
+            this.TP_AutoPage.Controls.Add(this.LB_ConnectionStatus);
+            this.TP_AutoPage.Controls.Add(this.LB_连接状态);
+            this.TP_AutoPage.Controls.Add(this.BTN_Test);
+            this.TP_AutoPage.Controls.Add(this.LB_AlarmStatus);
+            this.TP_AutoPage.Controls.Add(this.LB_报警状态);
+            this.TP_AutoPage.Controls.Add(this.LB_DeviceStatus);
+            this.TP_AutoPage.Controls.Add(this.LB_设备状态);
+            this.TP_AutoPage.Controls.Add(this.BTN_Stop);
+            this.TP_AutoPage.Controls.Add(this.BTN_Start);
             this.TP_AutoPage.Controls.Add(this.BTN_Manual);
             this.TP_AutoPage.Controls.Add(this.BTN_Auto);
             this.TP_AutoPage.Controls.Add(this.TS_Connection);
@@ -80,10 +92,98 @@
             this.TP_AutoPage.Text = "主界面";
             this.TP_AutoPage.UseVisualStyleBackColor = true;
             // 
+            // LB_ConnectionStatus
+            // 
+            this.LB_ConnectionStatus.BackColor = System.Drawing.Color.Silver;
+            this.LB_ConnectionStatus.Location = new System.Drawing.Point(99, 99);
+            this.LB_ConnectionStatus.Name = "LB_ConnectionStatus";
+            this.LB_ConnectionStatus.Size = new System.Drawing.Size(30, 15);
+            this.LB_ConnectionStatus.TabIndex = 11;
+            this.LB_ConnectionStatus.Text = "     ";
+            // 
+            // LB_连接状态
+            // 
+            this.LB_连接状态.AutoSize = true;
+            this.LB_连接状态.Location = new System.Drawing.Point(22, 99);
+            this.LB_连接状态.Name = "LB_连接状态";
+            this.LB_连接状态.Size = new System.Drawing.Size(59, 17);
+            this.LB_连接状态.TabIndex = 10;
+            this.LB_连接状态.Text = "连接状态:";
+            // 
+            // BTN_Test
+            // 
+            this.BTN_Test.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.BTN_Test.Location = new System.Drawing.Point(555, 320);
+            this.BTN_Test.Name = "BTN_Test";
+            this.BTN_Test.Size = new System.Drawing.Size(75, 23);
+            this.BTN_Test.TabIndex = 9;
+            this.BTN_Test.Text = "测试";
+            this.BTN_Test.UseVisualStyleBackColor = true;
+            this.BTN_Test.Click += new System.EventHandler(this.BTN_Test_Click);
+            // 
+            // LB_AlarmStatus
+            // 
+            this.LB_AlarmStatus.BackColor = System.Drawing.Color.Silver;
+            this.LB_AlarmStatus.Location = new System.Drawing.Point(99, 71);
+            this.LB_AlarmStatus.Name = "LB_AlarmStatus";
+            this.LB_AlarmStatus.Size = new System.Drawing.Size(30, 15);
+            this.LB_AlarmStatus.TabIndex = 8;
+            this.LB_AlarmStatus.Text = "     ";
+            // 
+            // LB_报警状态
+            // 
+            this.LB_报警状态.AutoSize = true;
+            this.LB_报警状态.Location = new System.Drawing.Point(22, 71);
+            this.LB_报警状态.Name = "LB_报警状态";
+            this.LB_报警状态.Size = new System.Drawing.Size(71, 17);
+            this.LB_报警状态.TabIndex = 7;
+            this.LB_报警状态.Text = "报警灯状态:";
+            // 
+            // LB_DeviceStatus
+            // 
+            this.LB_DeviceStatus.AutoSize = true;
+            this.LB_DeviceStatus.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.LB_DeviceStatus.Location = new System.Drawing.Point(87, 44);
+            this.LB_DeviceStatus.Name = "LB_DeviceStatus";
+            this.LB_DeviceStatus.Size = new System.Drawing.Size(54, 17);
+            this.LB_DeviceStatus.TabIndex = 6;
+            this.LB_DeviceStatus.Text = "Default";
+            // 
+            // LB_设备状态
+            // 
+            this.LB_设备状态.AutoSize = true;
+            this.LB_设备状态.Location = new System.Drawing.Point(22, 44);
+            this.LB_设备状态.Name = "LB_设备状态";
+            this.LB_设备状态.Size = new System.Drawing.Size(59, 17);
+            this.LB_设备状态.TabIndex = 5;
+            this.LB_设备状态.Text = "设备状态:";
+            // 
+            // BTN_Stop
+            // 
+            this.BTN_Stop.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.BTN_Stop.Location = new System.Drawing.Point(474, 320);
+            this.BTN_Stop.Name = "BTN_Stop";
+            this.BTN_Stop.Size = new System.Drawing.Size(75, 23);
+            this.BTN_Stop.TabIndex = 4;
+            this.BTN_Stop.Text = "停止";
+            this.BTN_Stop.UseVisualStyleBackColor = true;
+            this.BTN_Stop.Click += new System.EventHandler(this.BTN_Stop_Click);
+            // 
+            // BTN_Start
+            // 
+            this.BTN_Start.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.BTN_Start.Location = new System.Drawing.Point(393, 320);
+            this.BTN_Start.Name = "BTN_Start";
+            this.BTN_Start.Size = new System.Drawing.Size(75, 23);
+            this.BTN_Start.TabIndex = 3;
+            this.BTN_Start.Text = "启动";
+            this.BTN_Start.UseVisualStyleBackColor = true;
+            this.BTN_Start.Click += new System.EventHandler(this.BTN_Start_Click);
+            // 
             // BTN_Manual
             // 
             this.BTN_Manual.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.BTN_Manual.Location = new System.Drawing.Point(480, 320);
+            this.BTN_Manual.Location = new System.Drawing.Point(312, 320);
             this.BTN_Manual.Name = "BTN_Manual";
             this.BTN_Manual.Size = new System.Drawing.Size(75, 23);
             this.BTN_Manual.TabIndex = 2;
@@ -107,12 +207,7 @@
             this.TS_Connection.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.TS_Connection.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.TSB_Listening,
-            this.TSB_Stop,
-            this.TSB_Save,
-            this.TSTB_Port,
-            this.TSL_端口,
-            this.TSTB_IP,
-            this.TSL_IP});
+            this.TSB_Set});
             this.TS_Connection.Location = new System.Drawing.Point(3, 3);
             this.TS_Connection.Name = "TS_Connection";
             this.TS_Connection.Size = new System.Drawing.Size(786, 25);
@@ -129,53 +224,16 @@
             this.TSB_Listening.Text = "开始监听";
             this.TSB_Listening.Click += new System.EventHandler(this.TSB_Listening_Click);
             // 
-            // TSB_Stop
+            // TSB_Set
             // 
-            this.TSB_Stop.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.TSB_Stop.Enabled = false;
-            this.TSB_Stop.Image = ((System.Drawing.Image)(resources.GetObject("TSB_Stop.Image")));
-            this.TSB_Stop.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.TSB_Stop.Name = "TSB_Stop";
-            this.TSB_Stop.Size = new System.Drawing.Size(60, 22);
-            this.TSB_Stop.Text = "停止监听";
-            this.TSB_Stop.Click += new System.EventHandler(this.TSB_Stop_Click);
-            // 
-            // TSB_Save
-            // 
-            this.TSB_Save.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.TSB_Save.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.TSB_Save.Image = ((System.Drawing.Image)(resources.GetObject("TSB_Save.Image")));
-            this.TSB_Save.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.TSB_Save.Name = "TSB_Save";
-            this.TSB_Save.Size = new System.Drawing.Size(60, 22);
-            this.TSB_Save.Text = "保存地址";
-            this.TSB_Save.Click += new System.EventHandler(this.TSB_Save_Click);
-            // 
-            // TSTB_Port
-            // 
-            this.TSTB_Port.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.TSTB_Port.Name = "TSTB_Port";
-            this.TSTB_Port.Size = new System.Drawing.Size(50, 25);
-            // 
-            // TSL_端口
-            // 
-            this.TSL_端口.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.TSL_端口.Name = "TSL_端口";
-            this.TSL_端口.Size = new System.Drawing.Size(44, 22);
-            this.TSL_端口.Text = "端口：";
-            // 
-            // TSTB_IP
-            // 
-            this.TSTB_IP.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.TSTB_IP.Name = "TSTB_IP";
-            this.TSTB_IP.Size = new System.Drawing.Size(100, 25);
-            // 
-            // TSL_IP
-            // 
-            this.TSL_IP.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.TSL_IP.Name = "TSL_IP";
-            this.TSL_IP.Size = new System.Drawing.Size(31, 22);
-            this.TSL_IP.Text = "IP：";
+            this.TSB_Set.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.TSB_Set.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.TSB_Set.Image = ((System.Drawing.Image)(resources.GetObject("TSB_Set.Image")));
+            this.TSB_Set.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.TSB_Set.Name = "TSB_Set";
+            this.TSB_Set.Size = new System.Drawing.Size(36, 22);
+            this.TSB_Set.Text = "设置";
+            this.TSB_Set.Click += new System.EventHandler(this.TSB_Set_Click);
             // 
             // TP_DataPage
             // 
@@ -192,26 +250,15 @@
             // GB_Inquire
             // 
             this.GB_Inquire.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.GB_Inquire.Controls.Add(this.BTN_Test);
             this.GB_Inquire.Controls.Add(this.BTN_Inquire);
             this.GB_Inquire.Controls.Add(this.DTP_Max);
             this.GB_Inquire.Controls.Add(this.DTP_Min);
             this.GB_Inquire.Location = new System.Drawing.Point(605, 3);
             this.GB_Inquire.Name = "GB_Inquire";
-            this.GB_Inquire.Size = new System.Drawing.Size(179, 172);
+            this.GB_Inquire.Size = new System.Drawing.Size(179, 111);
             this.GB_Inquire.TabIndex = 1;
             this.GB_Inquire.TabStop = false;
             this.GB_Inquire.Text = "查询";
-            // 
-            // BTN_Test
-            // 
-            this.BTN_Test.Location = new System.Drawing.Point(98, 80);
-            this.BTN_Test.Name = "BTN_Test";
-            this.BTN_Test.Size = new System.Drawing.Size(75, 23);
-            this.BTN_Test.TabIndex = 3;
-            this.BTN_Test.Text = "测试";
-            this.BTN_Test.UseVisualStyleBackColor = true;
-            this.BTN_Test.Click += new System.EventHandler(this.BTN_Test_Click);
             // 
             // BTN_Inquire
             // 
@@ -283,12 +330,7 @@
         private TabPage TP_DataPage;
         private ToolStrip TS_Connection;
         private ToolStripButton TSB_Listening;
-        private ToolStripButton TSB_Stop;
-        private ToolStripButton TSB_Save;
-        private ToolStripTextBox TSTB_Port;
-        private ToolStripLabel TSL_端口;
-        private ToolStripTextBox TSTB_IP;
-        private ToolStripLabel TSL_IP;
+        private ToolStripButton TSB_Set;
         private Button BTN_Manual;
         private Button BTN_Auto;
         private DataGridView DGV_InquireData;
@@ -296,6 +338,14 @@
         private DateTimePicker DTP_Max;
         private DateTimePicker DTP_Min;
         private Button BTN_Inquire;
+        private Button BTN_Stop;
+        private Button BTN_Start;
+        private Label LB_DeviceStatus;
+        private Label LB_设备状态;
+        private Label LB_报警状态;
+        private Label LB_AlarmStatus;
         private Button BTN_Test;
+        private Label LB_连接状态;
+        private Label LB_ConnectionStatus;
     }
 }

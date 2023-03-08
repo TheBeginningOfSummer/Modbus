@@ -9,7 +9,7 @@ namespace Modbus
         public string DatabaseName { get; set; }
         public string DatabasePath { get; set; }
         public string ConnectionString;
-        public List<string> TableList = new List<string>();
+        public List<string> TableList = new();
 
         public DataManager(string databaseName, string databasePath = "Database")
         {
