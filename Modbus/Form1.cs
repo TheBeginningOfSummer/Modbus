@@ -19,7 +19,7 @@ namespace Modbus
         readonly SetForm setForm = new();
         #endregion
 
-        #region 控制量
+        #region 控制变量
         private bool isAddData = false;
         /// <summary>
         /// 数据添加
@@ -67,7 +67,9 @@ namespace Modbus
 
             }
         }
-
+        /// <summary>
+        /// 数据更新
+        /// </summary>
         private void DataUpdate()
         {
             byte[] checkBytes = new byte[] { 0x00, 0x00 };
@@ -82,7 +84,9 @@ namespace Modbus
                 if (isAddData) dataRefreshSwitch.WaitOne();
             }
         }
-
+        /// <summary>
+        /// 其他数据刷新
+        /// </summary>
         private void DataRefresh()
         {
             ushort connectionStatus;
