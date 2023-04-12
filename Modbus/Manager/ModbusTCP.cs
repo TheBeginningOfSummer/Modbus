@@ -15,6 +15,7 @@ namespace CommunicationsToolkit
         /// 数据连接
         /// </summary>
         public SocketTool Connection { get; set; }
+
         /// <summary>
         /// 保持寄存器区
         /// </summary>
@@ -142,6 +143,7 @@ namespace CommunicationsToolkit
             responseMessage[12] = (byte)data.Length;
             return ByteArrayToolkit.SpliceBytes(responseMessage, data);
         }
+
         /// <summary>
         /// 解析请求报文头
         /// </summary>
@@ -223,7 +225,6 @@ namespace CommunicationsToolkit
                 case 16://写多个保持寄存器
                     return WriteResponse(data, HoldingRegister, true);
                 default:
-
                     return default;
             }
         }

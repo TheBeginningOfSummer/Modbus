@@ -14,7 +14,6 @@ namespace Modbus
         SocketTool server;
         readonly ModbusTCP modbus;
         readonly DataManager dataManager;
-        readonly KeyValueLoader config;
         readonly AutoResetEvent dataRefreshSwitch = new(false);
         readonly SetForm setForm = new();
         #endregion
@@ -37,14 +36,11 @@ namespace Modbus
             //初始化Modbus从站
             modbus = new ModbusTCP(1);
             //初始化数据库
-            dataManager = new DataManager("test.db");
+            dataManager = new DataManager((setForm.Config.Load("DatabaseName") == "") ? "test.db" : setForm.Config.Load("DatabaseName"));
             //初始化数据库中的数据表
-            dataManager.InitializeDatabase("test", "create table test (ID INTEGER primary key autoincrement,重量 REAL,测量时间 TEXT)");
-            //配置管理加载
-            config = new KeyValueLoader("configuration.json", "Config");
-            //连接数据初始化
-            setForm.TB_IP.Text = config.Load("IP");
-            setForm.TB_Port.Text = config.Load("Port");
+            dataManager.InitializeDatabase
+                ((setForm.Config.Load("TableName") == "") ? "test" : setForm.Config.Load("TableName"),
+                $"create table {((setForm.Config.Load("TableName") == "") ? "test" : setForm.Config.Load("TableName"))} (ID INTEGER primary key autoincrement,重量 REAL,测量时间 TEXT)");
             //设置查询时间上下限
             DTP_Min.Value = Convert.ToDateTime(DateTime.Now.AddDays(-7));
             DTP_Max.Value = Convert.ToDateTime(DateTime.Now.AddDays(1));
@@ -57,8 +53,10 @@ namespace Modbus
         {
             try
             {
+                ModbusTCP.SetRegister(modbus.HoldingRegister, BitConverter.GetBytes(2.336f), 205);
                 float weight = BitConverter.ToSingle(ModbusTCP.ReadRegister(modbus.HoldingRegister, 205, 2)!, 0);
-                dataManager.AddData("test", new Models.WeightData(weight, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")));
+                dataManager.AddData(((setForm.Config.Load("TableName") == "") ? "test" : setForm.Config.Load("TableName")),
+                    new Models.WeightData(weight.ToString(), DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")));
                 ModbusTCP.SetRegister(modbus.HoldingRegister, 0, 204);
                 dataRefreshSwitch.Set();
             }
@@ -197,9 +195,9 @@ namespace Modbus
         #region 数据库
         private void BTN_Inquire_Click(object sender, EventArgs e)
         {
-            DGV_InquireData.DataSource = dataManager.InquireData("test", DTP_Min.Value.ToString("yyyy-MM-dd HH:mm:ss"), DTP_Max.Value.ToString("yyyy-MM-dd HH:mm:ss"));
-            //DGV_InquireData.DataSource = dataManager.InquireAllData("test");
-            //DGV_InquireData.DataSource = dataManager.InquireTables();
+            DGV_InquireData.DataSource = dataManager.InquireData
+                (((setForm.Config.Load("TableName") == "") ? "test" : setForm.Config.Load("TableName")),
+                DTP_Min.Value.ToString("yyyy-MM-dd HH:mm:ss"), DTP_Max.Value.ToString("yyyy-MM-dd HH:mm:ss"));
         }
         #endregion
 
@@ -239,30 +237,6 @@ namespace Modbus
 
         private void BTN_Test_Click(object sender, EventArgs e)
         {
-            //BTN_Test.Enabled = false;
-            //Task.Run(() =>
-            //{
-            //    ModbusTCP.SetRegister(modbus.HoldingRegister, 1, 202);
-            //    Thread.Sleep(2000);
-            //    ModbusTCP.SetRegister(modbus.HoldingRegister, 2, 202);
-            //    Thread.Sleep(2000);
-            //    ModbusTCP.SetRegister(modbus.HoldingRegister, 3, 202);
-            //    Thread.Sleep(2000);
-            //    ModbusTCP.SetRegister(modbus.HoldingRegister, 4, 202);
-            //    Thread.Sleep(2000);
-            //    ModbusTCP.SetRegister(modbus.HoldingRegister, 8, 202);
-            //    Thread.Sleep(2000);
-            //    ModbusTCP.SetRegister(modbus.HoldingRegister, 9, 202);
-            //    Thread.Sleep(2000);
-            //    ModbusTCP.SetRegister(modbus.HoldingRegister, 1, 208);
-            //    Thread.Sleep(2000);
-            //    ModbusTCP.SetRegister(modbus.HoldingRegister, 2, 208);
-            //    Thread.Sleep(2000);
-            //    ModbusTCP.SetRegister(modbus.HoldingRegister, 3, 208);
-            //    Thread.Sleep(2000);
-            //    Invoke(new Action(() => BTN_Test.Enabled = true));
-            //});
-
             //ModbusTCP.SetRegister(modbus.HoldingRegister, 1, 204);
             ModbusTCP.SetRegister(modbus.HoldingRegister, 1, 1);
         }
