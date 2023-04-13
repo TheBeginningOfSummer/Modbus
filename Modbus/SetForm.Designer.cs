@@ -41,9 +41,13 @@
             label4 = new Label();
             label3 = new Label();
             BTN_Save2 = new Button();
+            GB_Database = new GroupBox();
+            GB_TCPIP = new GroupBox();
             TC_Set.SuspendLayout();
             TP_ConnectionSet.SuspendLayout();
             TP_OtherSet.SuspendLayout();
+            GB_Database.SuspendLayout();
+            GB_TCPIP.SuspendLayout();
             SuspendLayout();
             // 
             // TC_Set
@@ -59,11 +63,8 @@
             // 
             // TP_ConnectionSet
             // 
+            TP_ConnectionSet.Controls.Add(GB_TCPIP);
             TP_ConnectionSet.Controls.Add(BTN_Save1);
-            TP_ConnectionSet.Controls.Add(TB_Port);
-            TP_ConnectionSet.Controls.Add(TB_IP);
-            TP_ConnectionSet.Controls.Add(label2);
-            TP_ConnectionSet.Controls.Add(label1);
             TP_ConnectionSet.Location = new Point(4, 26);
             TP_ConnectionSet.Name = "TP_ConnectionSet";
             TP_ConnectionSet.Padding = new Padding(3);
@@ -85,14 +86,14 @@
             // 
             // TB_Port
             // 
-            TB_Port.Location = new Point(59, 44);
+            TB_Port.Location = new Point(80, 48);
             TB_Port.Name = "TB_Port";
             TB_Port.Size = new Size(100, 23);
             TB_Port.TabIndex = 3;
             // 
             // TB_IP
             // 
-            TB_IP.Location = new Point(59, 12);
+            TB_IP.Location = new Point(80, 16);
             TB_IP.Name = "TB_IP";
             TB_IP.Size = new Size(100, 23);
             TB_IP.TabIndex = 2;
@@ -100,7 +101,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(9, 47);
+            label2.Location = new Point(6, 48);
             label2.Name = "label2";
             label2.Size = new Size(44, 17);
             label2.TabIndex = 1;
@@ -109,7 +110,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(8, 15);
+            label1.Location = new Point(6, 19);
             label1.Name = "label1";
             label1.Size = new Size(55, 17);
             label1.TabIndex = 0;
@@ -117,10 +118,7 @@
             // 
             // TP_OtherSet
             // 
-            TP_OtherSet.Controls.Add(TB_TableName);
-            TP_OtherSet.Controls.Add(TB_DatabaseName);
-            TP_OtherSet.Controls.Add(label4);
-            TP_OtherSet.Controls.Add(label3);
+            TP_OtherSet.Controls.Add(GB_Database);
             TP_OtherSet.Controls.Add(BTN_Save2);
             TP_OtherSet.Location = new Point(4, 26);
             TP_OtherSet.Name = "TP_OtherSet";
@@ -132,14 +130,14 @@
             // 
             // TB_TableName
             // 
-            TB_TableName.Location = new Point(82, 43);
+            TB_TableName.Location = new Point(80, 48);
             TB_TableName.Name = "TB_TableName";
             TB_TableName.Size = new Size(100, 23);
             TB_TableName.TabIndex = 4;
             // 
             // TB_DatabaseName
             // 
-            TB_DatabaseName.Location = new Point(82, 11);
+            TB_DatabaseName.Location = new Point(80, 16);
             TB_DatabaseName.Name = "TB_DatabaseName";
             TB_DatabaseName.Size = new Size(100, 23);
             TB_DatabaseName.TabIndex = 3;
@@ -147,7 +145,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(8, 46);
+            label4.Location = new Point(6, 51);
             label4.Name = "label4";
             label4.Size = new Size(68, 17);
             label4.TabIndex = 2;
@@ -156,7 +154,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(8, 14);
+            label3.Location = new Point(6, 19);
             label3.Name = "label3";
             label3.Size = new Size(68, 17);
             label3.TabIndex = 1;
@@ -173,6 +171,32 @@
             BTN_Save2.UseVisualStyleBackColor = true;
             BTN_Save2.Click += BTN_Save2_Click;
             // 
+            // GB_Database
+            // 
+            GB_Database.Controls.Add(label3);
+            GB_Database.Controls.Add(TB_TableName);
+            GB_Database.Controls.Add(label4);
+            GB_Database.Controls.Add(TB_DatabaseName);
+            GB_Database.Location = new Point(8, 6);
+            GB_Database.Name = "GB_Database";
+            GB_Database.Size = new Size(190, 82);
+            GB_Database.TabIndex = 5;
+            GB_Database.TabStop = false;
+            GB_Database.Text = "数据库";
+            // 
+            // GB_TCPIP
+            // 
+            GB_TCPIP.Controls.Add(label1);
+            GB_TCPIP.Controls.Add(label2);
+            GB_TCPIP.Controls.Add(TB_Port);
+            GB_TCPIP.Controls.Add(TB_IP);
+            GB_TCPIP.Location = new Point(8, 6);
+            GB_TCPIP.Name = "GB_TCPIP";
+            GB_TCPIP.Size = new Size(190, 82);
+            GB_TCPIP.TabIndex = 5;
+            GB_TCPIP.TabStop = false;
+            GB_TCPIP.Text = "TCP/IP";
+            // 
             // SetForm
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
@@ -185,9 +209,11 @@
             Text = "设置";
             TC_Set.ResumeLayout(false);
             TP_ConnectionSet.ResumeLayout(false);
-            TP_ConnectionSet.PerformLayout();
             TP_OtherSet.ResumeLayout(false);
-            TP_OtherSet.PerformLayout();
+            GB_Database.ResumeLayout(false);
+            GB_Database.PerformLayout();
+            GB_TCPIP.ResumeLayout(false);
+            GB_TCPIP.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -206,5 +232,7 @@
         private Label label3;
         private TextBox TB_TableName;
         private TextBox TB_DatabaseName;
+        private GroupBox GB_Database;
+        private GroupBox GB_TCPIP;
     }
 }

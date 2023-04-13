@@ -196,7 +196,7 @@ namespace Modbus
         private void BTN_Inquire_Click(object sender, EventArgs e)
         {
             DGV_InquireData.DataSource = dataManager.InquireData
-                (((setForm.Config.Load("TableName") == "") ? "test" : setForm.Config.Load("TableName")),
+                ((setForm.Config.Load("TableName") == "") ? "test" : setForm.Config.Load("TableName"),
                 DTP_Min.Value.ToString("yyyy-MM-dd HH:mm:ss"), DTP_Max.Value.ToString("yyyy-MM-dd HH:mm:ss"));
         }
         #endregion
@@ -237,7 +237,9 @@ namespace Modbus
 
         private void BTN_Test_Click(object sender, EventArgs e)
         {
+            //增加数据标志位置为1
             //ModbusTCP.SetRegister(modbus.HoldingRegister, 1, 204);
+            //连接标志
             ModbusTCP.SetRegister(modbus.HoldingRegister, 1, 1);
         }
         #endregion
