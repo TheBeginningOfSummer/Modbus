@@ -5,7 +5,9 @@ VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Modbus", "Modbus\Modbus.csproj", "{40D49E67-48FD-4863-9770-D76900268329}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Master", "Master\Master.csproj", "{D0E262B5-D27B-49AA-9ECE-6DDCA0CD8451}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Master", "Master\Master.csproj", "{D0E262B5-D27B-49AA-9ECE-6DDCA0CD8451}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModbusWpf", "ModbusWpf\ModbusWpf.csproj", "{9B4AC1C2-F24B-46E5-B67F-8E65263242AA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{D0E262B5-D27B-49AA-9ECE-6DDCA0CD8451}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0E262B5-D27B-49AA-9ECE-6DDCA0CD8451}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0E262B5-D27B-49AA-9ECE-6DDCA0CD8451}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B4AC1C2-F24B-46E5-B67F-8E65263242AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B4AC1C2-F24B-46E5-B67F-8E65263242AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B4AC1C2-F24B-46E5-B67F-8E65263242AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B4AC1C2-F24B-46E5-B67F-8E65263242AA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
