@@ -3,17 +3,61 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:cv="clr-namespace:ModbusWpf.Converters"
         xmlns:local="clr-namespace:ModbusWpf"
         mc:Ignorable="d"
         DataContext="{Binding MainWindowVM,Source={StaticResource ServiceLocator}}"
         Title="MainWindow" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <cv:ColorConverter x:Key="ColorConverter"/>
+            <cv:DeviceStatusConverter x:Key="DeviceStatusConverter"/>
+            <cv:ConnectionStatusConverter x:Key="ConnectionStatusConverter"/>
+            <cv:AlarmStatusConverter x:Key="AlarmStatusConverter"/>
+        </ResourceDictionary>
+    </Window.Resources>
+
     <Grid>
         <TabControl TabStripPlacement="Left">
             <TabItem Header="工作">
-                
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="监听" Margin="10" Command="{Binding StartListen}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Grid.Row="1">
+                        <TextBlock Text="连接状态：" VerticalAlignment="Center" Margin="10 0 5 0" FontWeight="Bold"/>
+                        <TextBlock Background="{Binding ConnectionStatus,Converter={StaticResource ConnectionStatusConverter}}" VerticalAlignment="Center" Width="10" Height="10"/>
+                        <TextBlock Text="报警状态：" VerticalAlignment="Center" Margin="10 0 5 0" FontWeight="Bold"/>
+                        <TextBlock Background="{Binding AlarmStatus,Converter={StaticResource AlarmStatusConverter}}" VerticalAlignment="Center" Width="10" Height="10"/>
+                        <TextBlock Text="设备状态：" VerticalAlignment="Center" Margin="10 0 5 0" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding DeviceStatus,Converter={StaticResource DeviceStatusConverter}}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
             </TabItem>
             <TabItem Header="数据">
-                <DataGrid ItemsSource="{Binding Weights}"/>
+                <DataGrid ItemsSource="{Binding Weights}" IsReadOnly="True"/>
+            </TabItem>
+            <TabItem Header="设置">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="IP：" VerticalAlignment="Center" Margin="10 0 5 0" FontWeight="Bold"/>
+                        <TextBox Text="{Binding IP}" VerticalAlignment="Center" Width="80"/>
+                        <TextBlock Text="Port：" VerticalAlignment="Center" Margin="10 0 5 0" FontWeight="Bold"/>
+                        <TextBox Text="{Binding Port}" VerticalAlignment="Center" Width="30"/>
+                    </StackPanel>
+                </Grid>
             </TabItem>
         </TabControl>
 

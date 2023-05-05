@@ -1,14 +1,18 @@
-﻿namespace Models;
+﻿using SQLite;
+
+namespace Models;
 
 public class WeightData
 {
+    [PrimaryKey]
+    public int Id { get; set; }
     public string? Weight { get; set; }
-    public string? WeighTime { get; set; }
+    public string? Time { get; set; }
 
-    public WeightData(string weight, string weighTime)
+    public WeightData(string weight, string time)
     {
         Weight = weight;
-        WeighTime = weighTime;
+        Time = time;
     }
 
     public WeightData() { }
