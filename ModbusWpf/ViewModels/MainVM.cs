@@ -8,13 +8,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Media.Animation;
 using static MyToolkit.ConnectionToolkit;
 
 namespace ViewModels;
@@ -57,8 +54,17 @@ public class MainVM : ObservableObject
         set => SetProperty(ref _alarmStatus, value);
     }
 
+    private ushort _alarmCode;
+    public ushort AlarmCode
+    {
+        get => _alarmCode;
+        set => SetProperty(ref _alarmCode, value);
+    }
+
+    public ObservableCollection<WeightData> Weights { get; } = new ObservableCollection<WeightData>();
     #endregion
 
+    #region 命令
     private RelayCommand? _startListen;
     public RelayCommand StartListen => _startListen ??= new RelayCommand(() =>
     {
@@ -73,22 +79,97 @@ public class MainVM : ObservableObject
         }
     });
 
-    public ObservableCollection<WeightData> Weights { get; } = new ObservableCollection<WeightData>();
-    
+    private RelayCommand? _auto;
+    public RelayCommand Auto => _auto ??= new RelayCommand(() =>
+    {
+        var result = MessageBox.Show("是否切换自动模式？", "提示", MessageBoxButton.YesNo, MessageBoxImage.Question);
+        if (result == MessageBoxResult.Yes)
+        {
+            _modbus.SetHoldingRegister(2, 2);
+        }
+    });
+
+    private RelayCommand? _manual;
+    public RelayCommand Manual => _manual ??= new RelayCommand(() =>
+    {
+        var result = MessageBox.Show("是否切换手动模式？", "提示", MessageBoxButton.YesNo, MessageBoxImage.Question);
+        if (result == MessageBoxResult.Yes)
+            _modbus.SetHoldingRegister(1, 2);
+    });
+
+    private RelayCommand? _start;
+    public RelayCommand Start => _start ??= new RelayCommand(() =>
+    {
+        var result = MessageBox.Show("是否启动？", "提示", MessageBoxButton.YesNo, MessageBoxImage.Question);
+        if (result == MessageBoxResult.Yes)
+            _modbus.SetHoldingRegister(1, 3);
+    });
+
+    private RelayCommand? _stop;
+    public RelayCommand Stop => _stop ??= new RelayCommand(() =>
+    {
+        var result = MessageBox.Show("是否停止？", "提示", MessageBoxButton.YesNo, MessageBoxImage.Question);
+        if (result == MessageBoxResult.Yes)
+            _modbus.SetHoldingRegister(2, 3);
+    });
+
+    private RelayCommand? _inquire;
+    public RelayCommand Inquire => _inquire ??= new RelayCommand(() =>
+    {
+        //_sqlite.SQLConnection.
+    });
+
+    private RelayCommand? _test;
+    public RelayCommand Test => _test ??= new RelayCommand(() =>
+    {
+        //_modbus.SetHoldingRegister(1, 1);
+        Task.Run(() =>
+        {
+            for (ushort i = 0; i < 10; i++)
+            {
+                Thread.Sleep(1000);
+                _modbus.SetHoldingRegister(i, 202);
+            }
+        });
+    });
+
+    private RelayCommand? _saveConnectionConfig;
+    public RelayCommand SaveConnectionConfig => _saveConnectionConfig ??= new RelayCommand(() =>
+    {
+        try
+        {
+            _config.Change("IP", string.IsNullOrEmpty(IP) ? "127.0.0.1" : IP);
+            _config.Change("Port", string.IsNullOrEmpty(Port) ? "9600" : Port);
+            MessageBox.Show("保存成功", "保存设置");
+        }
+        catch (Exception)
+        {
+
+        }
+    });
+
+    #endregion
+
+    #region 实例
     [AllowNull]
     SocketTool? _server;
     readonly ModbusTCP _modbus = new();
     readonly SQLiteService _sqlite = new("Weight.db", "Database");
+    readonly KeyValueLoader _config = new("Configuration.json", "Config");
+    #endregion
 
     public MainVM()
     {
         _sqlite.InitializeTableAsync<WeightData>();
         InitializeData();
+        IP = _config.Load("IP");
+        Port = _config.Load("Port");
 
         Task.Run(DataRefreshSwitch);
         Task.Run(DataRefresh);
     }
 
+    #region 方法
     public async void InitializeData()
     {
         try
@@ -108,9 +189,10 @@ public class MainVM : ObservableObject
     {
         try
         {
-            _modbus.SetHoldingRegister(BitConverter.GetBytes(2.336f), 205);
+            //_modbus.SetHoldingRegister(BitConverter.GetBytes(2.336f), 205);
             float weight = BitConverter.ToSingle(_modbus.ReadHoldingRegister(205, 2)!, 0);
             _sqlite.SQLConnection.InsertAsync(new WeightData(weight.ToString(), DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")));
+            //操作完成后标志位置回
             _modbus.SetHoldingRegister(0, 204);
         }
         catch (Exception)
@@ -136,15 +218,15 @@ public class MainVM : ObservableObject
     /// </summary>
     private void DataRefresh()
     {
-        ushort alarmCode;
         while (true)
         {
             Thread.Sleep(500);
             ConnectionStatus = (ushort)DataConverter.TwoBytesToUInt(_modbus.ReadHoldingRegister(1)!);
             DeviceStatus = (ushort)DataConverter.TwoBytesToUInt(_modbus.ReadHoldingRegister(202)!);
             AlarmStatus = (ushort)DataConverter.TwoBytesToUInt(_modbus.ReadHoldingRegister(208)!);
-            alarmCode = (ushort)DataConverter.TwoBytesToUInt(_modbus.ReadHoldingRegister(209)!);
+            AlarmCode = (ushort)DataConverter.TwoBytesToUInt(_modbus.ReadHoldingRegister(209)!);
+            if (ConnectionStatus == 1) _modbus.SetHoldingRegister(0, 1);
         }
     }
-
+    #endregion
 }

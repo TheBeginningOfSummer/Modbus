@@ -24,14 +24,11 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="50"/>
-                        <RowDefinition Height="50"/>
                         <RowDefinition/>
+                        <RowDefinition Height="100"/>
                     </Grid.RowDefinitions>
 
-                    <StackPanel Orientation="Horizontal">
-                        <Button Content="监听" Margin="10" Command="{Binding StartListen}"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Grid.Row="1">
+                    <StackPanel Orientation="Horizontal" Grid.Row="0">
                         <TextBlock Text="连接状态：" VerticalAlignment="Center" Margin="10 0 5 0" FontWeight="Bold"/>
                         <TextBlock Background="{Binding ConnectionStatus,Converter={StaticResource ConnectionStatusConverter}}" VerticalAlignment="Center" Width="10" Height="10"/>
                         <TextBlock Text="报警状态：" VerticalAlignment="Center" Margin="10 0 5 0" FontWeight="Bold"/>
@@ -39,16 +36,37 @@
                         <TextBlock Text="设备状态：" VerticalAlignment="Center" Margin="10 0 5 0" FontWeight="Bold"/>
                         <TextBlock Text="{Binding DeviceStatus,Converter={StaticResource DeviceStatusConverter}}" VerticalAlignment="Center"/>
                     </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Center">
+                        <Button Content="监听" Margin="10 0 0 0" Height="30" Command="{Binding StartListen}"/>
+                        <Button Content="自动" Margin="10 0 0 0" Height="30" Command="{Binding StartListen}"/>
+                        <Button Content="手动" Margin="10 0 0 0" Height="30" Command="{Binding StartListen}"/>
+                        <Button Content="开始" Margin="10 0 0 0" Height="30" Command="{Binding StartListen}"/>
+                        <Button Content="停止" Margin="10 0 0 0" Height="30" Command="{Binding StartListen}"/>
+                        <Button Content="测试" Margin="10 0 0 0" Height="30" Command="{Binding Test}"/>
+                    </StackPanel>
                 </Grid>
             </TabItem>
             <TabItem Header="数据">
-                <DataGrid ItemsSource="{Binding Weights}" IsReadOnly="True"/>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="50"/>
+                    </Grid.RowDefinitions>
+
+                    <DataGrid ItemsSource="{Binding Weights}" IsReadOnly="True"/>
+
+                    <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right">
+                        <Button Content="插入" Margin="10 0 10 0" Height="30" Command="{Binding}"/>
+                    </StackPanel>
+                </Grid>
             </TabItem>
             <TabItem Header="设置">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="50"/>
                         <RowDefinition/>
+                        <RowDefinition Height="50"/>
                     </Grid.RowDefinitions>
 
                     <StackPanel Orientation="Horizontal">
@@ -57,9 +75,12 @@
                         <TextBlock Text="Port：" VerticalAlignment="Center" Margin="10 0 5 0" FontWeight="Bold"/>
                         <TextBox Text="{Binding Port}" VerticalAlignment="Center" Width="30"/>
                     </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right">
+                        <Button Content="保存" Margin="10 0 10 0" Height="30" Command="{Binding SaveConnectionConfig}"/>
+                    </StackPanel>
                 </Grid>
             </TabItem>
         </TabControl>
-
     </Grid>
 </Window>
