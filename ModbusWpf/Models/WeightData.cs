@@ -4,7 +4,7 @@ namespace Models;
 
 public class WeightData
 {
-    [PrimaryKey]
+    [PrimaryKey, AutoIncrement]
     public int Id { get; set; }
     public string? Weight { get; set; }
     public string? Time { get; set; }

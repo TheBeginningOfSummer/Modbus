@@ -61,6 +61,34 @@ public class MainVM : ObservableObject
         set => SetProperty(ref _alarmCode, value);
     }
 
+    private string? _minTime;
+    public string? MinTime
+    {
+        get => _minTime;
+        set => SetProperty(ref _minTime, CheckTimeFormat(value));
+    }
+
+    private string? _maxTime;
+    public string? MaxTime
+    {
+        get => _maxTime;
+        set => SetProperty(ref _maxTime, CheckTimeFormat(value));
+    }
+
+    private string? _minDate;
+    public string? MinDate
+    {
+        get => _minDate;
+        set => SetProperty(ref _minDate, value);
+    }
+
+    private string? _maxDate;
+    public string? MaxDate
+    {
+        get => _maxDate;
+        set => SetProperty(ref _maxDate, value);
+    }
+
     public ObservableCollection<WeightData> Weights { get; } = new ObservableCollection<WeightData>();
     #endregion
 
@@ -114,23 +142,38 @@ public class MainVM : ObservableObject
     });
 
     private RelayCommand? _inquire;
-    public RelayCommand Inquire => _inquire ??= new RelayCommand(() =>
+    public RelayCommand Inquire => _inquire ??= new RelayCommand(async () =>
     {
-        //_sqlite.SQLConnection.
+        var min = $"{Convert.ToDateTime(MinDate):yyyy-MM-dd} {MinTime}";
+        var max = $"{Convert.ToDateTime(MaxDate):yyyy-MM-dd} {MaxTime}";
+        var dataSource = await _sqlite.SQLConnection.QueryAsync<WeightData>
+        ($"select * from WeightData where Time >='{min}' and Time <='{max}'");
+        if (dataSource == null) return; Weights.Clear();
+        foreach (var item in dataSource)
+        {
+            Weights.Add(item);
+        }
+    });
+
+    private RelayCommand? _timeChanged;
+    public RelayCommand TimeChanged => _timeChanged ??= new RelayCommand(() =>
+    {
+        
     });
 
     private RelayCommand? _test;
     public RelayCommand Test => _test ??= new RelayCommand(() =>
     {
-        //_modbus.SetHoldingRegister(1, 1);
-        Task.Run(() =>
-        {
-            for (ushort i = 0; i < 10; i++)
-            {
-                Thread.Sleep(1000);
-                _modbus.SetHoldingRegister(i, 202);
-            }
-        });
+        _modbus.SetHoldingRegister(1, 1);
+        //_modbus.SetHoldingRegister(1, 204);
+        //Task.Run(() =>
+        //{
+        //    for (ushort i = 0; i < 10; i++)
+        //    {
+        //        Thread.Sleep(1000);
+        //        _modbus.SetHoldingRegister(i, 202);
+        //    }
+        //});
     });
 
     private RelayCommand? _saveConnectionConfig;
@@ -164,7 +207,10 @@ public class MainVM : ObservableObject
         InitializeData();
         IP = _config.Load("IP");
         Port = _config.Load("Port");
-
+        MinTime = DateTime.Now.ToString("HH:mm:ss");
+        MaxTime = DateTime.Now.ToString("HH:mm:ss");
+        MinDate = Convert.ToDateTime(DateTime.Now.AddDays(-7)).ToString("d");
+        MaxDate = Convert.ToDateTime(DateTime.Now.AddDays(1)).ToString("d");
         Task.Run(DataRefreshSwitch);
         Task.Run(DataRefresh);
     }
@@ -184,7 +230,9 @@ public class MainVM : ObservableObject
             MessageBox.Show("加载信息失败。" + e.Message);
         }
     }
-
+    /// <summary>
+    /// 添加数据库数据
+    /// </summary>
     private void AddData()
     {
         try
@@ -197,11 +245,11 @@ public class MainVM : ObservableObject
         }
         catch (Exception)
         {
-
+            _modbus.SetHoldingRegister(0, 204);
         }
     }
     /// <summary>
-    /// 数据更新
+    /// 数据更新标记读取
     /// </summary>
     private void DataRefreshSwitch()
     {
@@ -227,6 +275,24 @@ public class MainVM : ObservableObject
             AlarmCode = (ushort)DataConverter.TwoBytesToUInt(_modbus.ReadHoldingRegister(209)!);
             if (ConnectionStatus == 1) _modbus.SetHoldingRegister(0, 1);
         }
+    }
+    /// <summary>
+    /// 时间格式检测
+    /// </summary>
+    /// <param name="time">时间</param>
+    /// <returns></returns>
+    private static string CheckTimeFormat(string? time)
+    {
+        if (string.IsNullOrEmpty(time)) return DateTime.Now.ToString("HH:mm:ss");
+        if (!time.Contains(':')) return DateTime.Now.ToString("HH:mm:ss");
+        if (time.Split(':').Length != 3) return DateTime.Now.ToString("HH:mm:ss");
+        if (!uint.TryParse(time.Split(':')[0], out uint hour)) return DateTime.Now.ToString("HH:mm:ss");
+        if (!uint.TryParse(time.Split(':')[1], out uint minute)) return DateTime.Now.ToString("HH:mm:ss");
+        if (!uint.TryParse(time.Split(':')[2], out uint second)) return DateTime.Now.ToString("HH:mm:ss");
+        if (hour > 23) return DateTime.Now.ToString("HH:mm:ss");
+        if (minute > 60) return DateTime.Now.ToString("HH:mm:ss");
+        if (second > 60) return DateTime.Now.ToString("HH:mm:ss");
+        return time;
     }
     #endregion
 }

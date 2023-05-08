@@ -3,6 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:behavior="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:cv="clr-namespace:ModbusWpf.Converters"
         xmlns:local="clr-namespace:ModbusWpf"
         mc:Ignorable="d"
@@ -57,7 +59,27 @@
                     <DataGrid ItemsSource="{Binding Weights}" IsReadOnly="True"/>
 
                     <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right">
-                        <Button Content="插入" Margin="10 0 10 0" Height="30" Command="{Binding}"/>
+                        <DatePicker Width="90" Margin="10" materialDesign:HintAssist.Hint="min"
+                                    SelectedDate="{Binding MinDate}" VerticalAlignment="Center"/>
+                        <TextBox Text="{Binding MinTime}" Width="60" VerticalAlignment="Center">
+                            <behavior:Interaction.Triggers>
+                                <behavior:EventTrigger EventName="TextChanged">
+                                    <behavior:InvokeCommandAction Command=""/>
+                                    <behavior:CallMethodAction MethodName=""/>
+                                </behavior:EventTrigger>
+                            </behavior:Interaction.Triggers>
+                        </TextBox>
+                        <DatePicker Width="90" Margin="10" materialDesign:HintAssist.Hint="max"
+                                    SelectedDate="{Binding MaxDate}" VerticalAlignment="Center"/>
+                        <TextBox Text="{Binding MaxTime}" Width="60" VerticalAlignment="Center">
+                            <behavior:Interaction.Triggers>
+                                <behavior:EventTrigger EventName="TextChanged">
+                                    <behavior:InvokeCommandAction Command=""/>
+                                    <behavior:CallMethodAction MethodName=""/>
+                                </behavior:EventTrigger>
+                            </behavior:Interaction.Triggers>
+                        </TextBox>
+                        <Button Content="查询" Margin="10 0 10 0" Height="30" Command="{Binding Inquire}"/>
                     </StackPanel>
                 </Grid>
             </TabItem>
