@@ -40,12 +40,42 @@
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Center">
-                        <Button Content="监听" Margin="10 0 0 0" Height="30" Command="{Binding StartListen}"/>
-                        <Button Content="自动" Margin="10 0 0 0" Height="30" Command="{Binding StartListen}"/>
-                        <Button Content="手动" Margin="10 0 0 0" Height="30" Command="{Binding StartListen}"/>
-                        <Button Content="开始" Margin="10 0 0 0" Height="30" Command="{Binding StartListen}"/>
-                        <Button Content="停止" Margin="10 0 0 0" Height="30" Command="{Binding StartListen}"/>
-                        <Button Content="测试" Margin="10 0 0 0" Height="30" Command="{Binding Test}"/>
+                        <Button Margin="10 0 0 0" Height="30" Command="{Binding StartListen}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Network" VerticalAlignment="Center"/>
+                                <TextBlock Text="连接" Margin="5 0 0 0" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Margin="10 0 0 0" Height="30" Command="{Binding Auto}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="AutoMode" VerticalAlignment="Center"/>
+                                <TextBlock Text="自动" Margin="5 0 0 0" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Margin="10 0 0 0" Height="30" Command="{Binding Manual}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="HumanGreetingVariant" VerticalAlignment="Center"/>
+                                <TextBlock Text="手动" Margin="5 0 0 0" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Margin="10 0 0 0" Height="30" Command="{Binding Start}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Play" VerticalAlignment="Center"/>
+                                <TextBlock Text="开始" Margin="5 0 0 0" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Margin="10 0 0 0" Height="30" Command="{Binding Stop}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Stop" VerticalAlignment="Center"/>
+                                <TextBlock Text="停止" Margin="5 0 0 0" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Margin="10 0 0 0" Height="30" Command="{Binding Test}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="AutoFix" VerticalAlignment="Center"/>
+                                <TextBlock Text="测试" Margin="5 0 0 0" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
                     </StackPanel>
                 </Grid>
             </TabItem>
@@ -79,7 +109,12 @@
                                 </behavior:EventTrigger>
                             </behavior:Interaction.Triggers>
                         </TextBox>
-                        <Button Content="查询" Margin="10 0 10 0" Height="30" Command="{Binding Inquire}"/>
+                        <Button Margin="10 0 10 0" Height="30" Command="{Binding Inquire}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="DatabaseSearch" VerticalAlignment="Center"/>
+                                <TextBlock Text="查询" Margin="5 0 0 0" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
                     </StackPanel>
                 </Grid>
             </TabItem>
@@ -99,7 +134,12 @@
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right">
-                        <Button Content="保存" Margin="10 0 10 0" Height="30" Command="{Binding SaveConnectionConfig}"/>
+                        <Button Margin="10 0 10 0" Height="30" Command="{Binding SaveConnectionConfig}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="ContentSave" VerticalAlignment="Center"/>
+                                <TextBlock Text="保存" Margin="5 0 0 0" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
                     </StackPanel>
                 </Grid>
             </TabItem>
