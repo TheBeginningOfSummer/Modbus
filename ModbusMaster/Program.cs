@@ -1,4 +1,4 @@
-namespace Master
+namespace ModbusMaster
 {
     internal static class Program
     {
