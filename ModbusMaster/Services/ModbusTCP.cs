@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Net.Sockets;
+﻿using System.Net.Sockets;
 using MyToolkit;
 using static MyToolkit.ConnectionToolkit;
 using static MyToolkit.DataConverter;
@@ -114,15 +112,15 @@ public class ModbusTCP
     /// <returns></returns>
     public static byte[] WriteDataMessage(byte stationID, byte code, ushort address, ushort amount, byte[] data, bool isLittleEndian = false)
     {
-        byte[] requestMessage = new byte[13];
+        byte[] responseMessage = new byte[13];
         ushort dataLength = (ushort)(7 + data.Length);
-        BitConverter.GetBytes(dataLength).CopyTo(requestMessage, 4);
-        requestMessage[6] = stationID;
-        requestMessage[7] = code;
+        BitConverter.GetBytes(dataLength).CopyTo(responseMessage, 4);
+        responseMessage[6] = stationID;
+        responseMessage[7] = code;
         if (isLittleEndian)
         {
-            BitConverter.GetBytes(address).CopyTo(requestMessage, 8);
-            BitConverter.GetBytes(amount).CopyTo(requestMessage, 10);
+            BitConverter.GetBytes(address).CopyTo(responseMessage, 8);
+            BitConverter.GetBytes(amount).CopyTo(responseMessage, 10);
         }
         else
         {
@@ -130,11 +128,11 @@ public class ModbusTCP
             byte[] amountBytes = BitConverter.GetBytes(amount);
             Array.Reverse(addressBytes);
             Array.Reverse(amountBytes);
-            addressBytes.CopyTo(requestMessage, 8);
-            amountBytes.CopyTo(requestMessage, 10);
+            addressBytes.CopyTo(responseMessage, 8);
+            amountBytes.CopyTo(responseMessage, 10);
         }
-        requestMessage[12] = (byte)data.Length;
-        return ByteArrayToolkit.SpliceBytes(requestMessage, data);
+        responseMessage[12] = (byte)data.Length;
+        return ByteArrayToolkit.SpliceBytes(responseMessage, data);
     }
     /// <summary>
     /// 解析响应报文
