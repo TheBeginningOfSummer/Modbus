@@ -149,10 +149,13 @@ public class ModbusTCP
         }
         switch (data[7])
         {
-            case 3://查看的数据
+            case 3://查看保持寄存器的数据
                 code = 3;
                 return data.Skip(9).ToArray();
-            case 6://写入成功后返回的数据
+            case 4://查看输入寄存器的数据
+                code = 4;
+                return data.Skip(9).ToArray();
+            case 6://写入保持寄存器成功后返回的数据
                 code = 6;
                 return data.Skip(10).ToArray();
             default:

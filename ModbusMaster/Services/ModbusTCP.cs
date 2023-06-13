@@ -1,4 +1,6 @@
-﻿using System.Net.Sockets;
+﻿using System;
+using System.Linq;
+using System.Net.Sockets;
 using MyToolkit;
 using static MyToolkit.ConnectionToolkit;
 using static MyToolkit.DataConverter;
@@ -112,15 +114,15 @@ public class ModbusTCP
     /// <returns></returns>
     public static byte[] WriteDataMessage(byte stationID, byte code, ushort address, ushort amount, byte[] data, bool isLittleEndian = false)
     {
-        byte[] responseMessage = new byte[13];
+        byte[] requestMessage = new byte[13];
         ushort dataLength = (ushort)(7 + data.Length);
-        BitConverter.GetBytes(dataLength).CopyTo(responseMessage, 4);
-        responseMessage[6] = stationID;
-        responseMessage[7] = code;
+        BitConverter.GetBytes(dataLength).CopyTo(requestMessage, 4);
+        requestMessage[6] = stationID;
+        requestMessage[7] = code;
         if (isLittleEndian)
         {
-            BitConverter.GetBytes(address).CopyTo(responseMessage, 8);
-            BitConverter.GetBytes(amount).CopyTo(responseMessage, 10);
+            BitConverter.GetBytes(address).CopyTo(requestMessage, 8);
+            BitConverter.GetBytes(amount).CopyTo(requestMessage, 10);
         }
         else
         {
@@ -128,11 +130,11 @@ public class ModbusTCP
             byte[] amountBytes = BitConverter.GetBytes(amount);
             Array.Reverse(addressBytes);
             Array.Reverse(amountBytes);
-            addressBytes.CopyTo(responseMessage, 8);
-            amountBytes.CopyTo(responseMessage, 10);
+            addressBytes.CopyTo(requestMessage, 8);
+            amountBytes.CopyTo(requestMessage, 10);
         }
-        responseMessage[12] = (byte)data.Length;
-        return ByteArrayToolkit.SpliceBytes(responseMessage, data);
+        requestMessage[12] = (byte)data.Length;
+        return ByteArrayToolkit.SpliceBytes(requestMessage, data);
     }
     /// <summary>
     /// 解析响应报文
@@ -147,10 +149,13 @@ public class ModbusTCP
         }
         switch (data[7])
         {
-            case 3://查看的数据
+            case 3://查看保持寄存器的数据
                 code = 3;
                 return data.Skip(9).ToArray();
-            case 6://写入成功后返回的数据
+            case 4://查看输入寄存器的数据
+                code = 4;
+                return data.Skip(9).ToArray();
+            case 6://写入保持寄存器成功后返回的数据
                 code = 6;
                 return data.Skip(10).ToArray();
             default:

@@ -25,6 +25,12 @@ public partial class Form1 : Form
                     TB_Info.Text = $"[{DateTime.Now}] 读取到的保持寄存器数据{Environment.NewLine}{ShowData(message!, ushort.Parse(TB_StartAddress.Text))}";
                 }));
                 break;
+            case 4:
+                TB_Info.Invoke(new Action(() =>
+                {
+                    TB_Info.Text = $"[{DateTime.Now}] 读取到的输入寄存器数据{Environment.NewLine}{ShowData(message!, ushort.Parse(TB_StartAddress.Text))}";
+                }));
+                break;
             case 6:
                 TB_Info.Invoke(new Action(() =>
                 {
