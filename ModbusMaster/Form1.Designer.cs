@@ -264,6 +264,7 @@
             Controls.Add(TB_Info);
             Controls.Add(toolStrip1);
             Name = "Form1";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "ModbusMaster";
             toolStrip1.ResumeLayout(false);
             toolStrip1.PerformLayout();

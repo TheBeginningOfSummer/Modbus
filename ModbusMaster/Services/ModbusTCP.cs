@@ -30,17 +30,17 @@ public class ModbusTCP
     public ModbusTCP(byte stationID, int holdingRegister, int inputRegister)
     {
         StationID = stationID;
-        Connection = new SocketTool();
         HoldingRegister = new byte[holdingRegister];
         InputRegister = new byte[inputRegister];
+        Connection = new SocketTool();
     }
 
     public ModbusTCP(byte stationID = 1)
     {
         StationID = stationID;
-        Connection = new SocketTool();
         HoldingRegister = new byte[20000];
         InputRegister = new byte[20000];
+        Connection = new SocketTool();
         Connection.ReceiveFromClient += MessageHandling;
     }
 
@@ -84,7 +84,7 @@ public class ModbusTCP
     /// <param name="data">写入的数据</param>
     /// <param name="isLittleEndian"></param>
     /// <returns></returns>
-    public static byte[] WriteDataMessage(byte stationID, ushort address, byte[] data, bool isLittleEndian = false)
+    public static byte[] WriteHoldingRegisterMessage(byte stationID, ushort address, byte[] data, bool isLittleEndian = false)
     {
         byte[] requestMessage = new byte[10];
         ushort dataLength = (ushort)(4 + data.Length);
@@ -104,21 +104,23 @@ public class ModbusTCP
         return ByteArrayToolkit.SpliceBytes(requestMessage, data);
     }
     /// <summary>
-    /// 写入多个寄存器的报文-待修改
+    /// 写入多个寄存器的报文
     /// </summary>
     /// <param name="stationID">站号</param>
     /// <param name="address">写入的地址</param>
     /// <param name="amount">写入的地址数</param>
-    /// <param name="data">写入的数据</param>
+    /// <param name="data">写入的数据，两个字节占一个地址</param>
     /// <param name="isLittleEndian"></param>
     /// <returns></returns>
-    public static byte[] WriteDataMessage(byte stationID, byte code, ushort address, ushort amount, byte[] data, bool isLittleEndian = false)
+    public static byte[] WriteHoldingRegisterMessage(byte stationID, ushort address, ushort amount, byte[] data, bool isLittleEndian = false)
     {
         byte[] requestMessage = new byte[13];
         ushort dataLength = (ushort)(7 + data.Length);
-        BitConverter.GetBytes(dataLength).CopyTo(requestMessage, 4);
+        byte[] bytesLength = BitConverter.GetBytes(dataLength);
+        Array.Reverse(bytesLength);
+        bytesLength.CopyTo(requestMessage, 4);
         requestMessage[6] = stationID;
-        requestMessage[7] = code;
+        requestMessage[7] = 16;
         if (isLittleEndian)
         {
             BitConverter.GetBytes(address).CopyTo(requestMessage, 8);
@@ -341,6 +343,7 @@ public class ModbusTCP
             return data;
         }
     }
+
     /// <summary>
     /// 解析报文并返回响应报文
     /// </summary>

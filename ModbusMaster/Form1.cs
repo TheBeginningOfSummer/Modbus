@@ -5,7 +5,7 @@ namespace ModbusMaster;
 
 public partial class Form1 : Form
 {
-    ModbusTCP _master = new();
+    readonly ModbusTCP _master = new();
     ushort _register = 3;
 
     public Form1()
@@ -63,9 +63,9 @@ public partial class Form1 : Form
             _master.Connection.Connection(TSTB_IP.Text, int.Parse(TSTB_Port.Text), out string error);
             MessageBox.Show("连接成功");
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            MessageBox.Show("连接失败");
+            MessageBox.Show(ex.Message);
         }
     }
 
@@ -74,10 +74,11 @@ public partial class Form1 : Form
         try
         {
             _master.Connection.Disconnection();
+            MessageBox.Show("断开成功");
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-
+            MessageBox.Show(ex.Message);
         }
     }
 
@@ -103,8 +104,8 @@ public partial class Form1 : Form
             if (!ushort.TryParse(TB_Address.Text, out ushort address)) return;
             if (!short.TryParse(TB_Value.Text, out short value)) return;
             if (address < 0) return;
-            byte[] command = ModbusTCP.WriteDataMessage(1, address, BitConverter.GetBytes(value));
-            _master.Connection.SocketItem.Send(command);
+            byte[] command = ModbusTCP.WriteHoldingRegisterMessage(1, address, BitConverter.GetBytes(value));
+            _master.Connection.SocketItem!.Send(command);
         }
         catch (Exception ex)
         {
@@ -119,7 +120,7 @@ public partial class Form1 : Form
             if (!ushort.TryParse(TB_StartAddress.Text, out ushort startAddress)) return;
             if (!ushort.TryParse(TB_AddressLength.Text, out ushort addressLength)) return;
             byte[] command = ModbusTCP.ReadDataMessage(1, (byte)_register, startAddress, addressLength);
-            _master.Connection.SocketItem.Send(command);
+            _master.Connection.SocketItem!.Send(command);
         }
         catch (Exception ex)
         {
